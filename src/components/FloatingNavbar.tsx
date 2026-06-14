@@ -7,7 +7,7 @@ import { useState } from 'react';
 export default function FloatingNavbar() {
   const { t, i18n } = useTranslation();
   const location = useLocation();
-  const { user, isLoggedIn, logout } = useAuthStore();
+  const { isLoggedIn, logout } = useAuthStore();
   const [showLangMenu, setShowLangMenu] = useState(false);
 
   const isHome = location.pathname === '/';
@@ -28,32 +28,17 @@ export default function FloatingNavbar() {
         'max-md:top-auto max-md:bottom-3 max-md:w-[calc(100%-1.5rem)]'
       )}
     >
-      <div className="flex items-center gap-1">
-        <Link
-          to="/"
-          className={cn(
-            'px-4 py-2 rounded-xl text-sm font-medium transition-all duration-200',
-            isHome
-              ? 'bg-black text-white'
-              : 'text-gray-700 hover:bg-gray-100'
-          )}
-        >
-          Home
-        </Link>
-        {isLoggedIn && (
-          <Link
-            to={user?.role === 'admin' ? '/admin' : '/dashboard'}
-            className={cn(
-              'px-4 py-2 rounded-xl text-sm font-medium transition-all duration-200',
-              !isHome
-                ? 'bg-black text-white'
-                : 'text-gray-700 hover:bg-gray-100'
-            )}
-          >
-            Me
-          </Link>
+      <Link
+        to="/"
+        className={cn(
+          'px-4 py-2 rounded-xl text-sm font-medium transition-all duration-200',
+          isHome
+            ? 'bg-black text-white'
+            : 'text-gray-700 hover:bg-gray-100'
         )}
-      </div>
+      >
+        Home
+      </Link>
 
       <div className="flex items-center gap-2">
         <div className="relative">
@@ -67,25 +52,22 @@ export default function FloatingNavbar() {
             Lang
           </button>
           {showLangMenu && (
-            <div className="absolute right-0 top-full mt-1 bg-white/90 backdrop-blur-xl rounded-xl border border-white/50 shadow-lg overflow-hidden min-w-[100px]">
-              <button
-                onClick={() => changeLanguage('en')}
-                className={cn(
-                  'w-full text-left px-4 py-2 text-sm hover:bg-gray-100 transition-colors',
-                  i18n.language === 'en' && 'font-semibold bg-gray-50'
-                )}
-              >
-                English
-              </button>
-              <button
-                onClick={() => changeLanguage('zh-TW')}
-                className={cn(
-                  'w-full text-left px-4 py-2 text-sm hover:bg-gray-100 transition-colors',
-                  i18n.language === 'zh-TW' && 'font-semibold bg-gray-50'
-                )}
-              >
-                繁體中文
-              </button>
+            <div className="absolute right-0 bottom-full mb-1 bg-white/90 backdrop-blur-xl rounded-xl border border-white/50 shadow-lg overflow-hidden">
+              {i18n.language === 'zh-TW' ? (
+                <button
+                  onClick={() => changeLanguage('en')}
+                  className="w-full text-left px-4 py-2 text-sm hover:bg-gray-100 transition-colors"
+                >
+                  English
+                </button>
+              ) : (
+                <button
+                  onClick={() => changeLanguage('zh-TW')}
+                  className="w-full text-left px-4 py-2 text-sm hover:bg-gray-100 transition-colors"
+                >
+                  繁體中文
+                </button>
+              )}
             </div>
           )}
         </div>
