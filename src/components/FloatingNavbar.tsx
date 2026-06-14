@@ -2,7 +2,6 @@ import { Link, useLocation } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { useAuthStore } from '@/stores/authStore';
 import { cn } from '@/lib/utils';
-import { User, Globe } from 'lucide-react';
 import { useState } from 'react';
 
 export default function FloatingNavbar() {
@@ -17,8 +16,6 @@ export default function FloatingNavbar() {
     i18n.changeLanguage(lng);
     setShowLangMenu(false);
   };
-
-  const currentLang = i18n.language === 'zh-TW' ? '繁中' : 'EN';
 
   return (
     <nav
@@ -41,20 +38,19 @@ export default function FloatingNavbar() {
               : 'text-gray-700 hover:bg-gray-100'
           )}
         >
-          {t('home')}
+          Home
         </Link>
         {isLoggedIn && (
           <Link
             to={user?.role === 'admin' ? '/admin' : '/dashboard'}
             className={cn(
-              'px-4 py-2 rounded-xl text-sm font-medium transition-all duration-200 flex items-center gap-1.5',
+              'px-4 py-2 rounded-xl text-sm font-medium transition-all duration-200',
               !isHome
                 ? 'bg-black text-white'
                 : 'text-gray-700 hover:bg-gray-100'
             )}
           >
-            <User size={16} />
-            {t('me')}
+            Me
           </Link>
         )}
       </div>
@@ -64,12 +60,11 @@ export default function FloatingNavbar() {
           <button
             onClick={() => setShowLangMenu(!showLangMenu)}
             className={cn(
-              'flex items-center gap-1 px-3 py-2 rounded-xl text-sm font-medium',
+              'px-3 py-2 rounded-xl text-sm font-medium',
               'transition-all duration-200 text-gray-700 hover:bg-gray-100'
             )}
           >
-            <Globe size={16} />
-            {currentLang}
+            Lang
           </button>
           {showLangMenu && (
             <div className="absolute right-0 top-full mt-1 bg-white/90 backdrop-blur-xl rounded-xl border border-white/50 shadow-lg overflow-hidden min-w-[100px]">
