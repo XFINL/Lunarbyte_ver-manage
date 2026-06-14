@@ -4,6 +4,8 @@ import Navbar from '@/components/Navbar';
 import VersionConfig from '@/components/VersionConfig';
 import { useAuthStore } from '@/stores/authStore';
 import { useAppStore } from '@/stores/appStore';
+import { useLangStore } from '@/stores/langStore';
+import { t } from '@/i18n/translations';
 import { getAppById } from '@/utils/storage';
 import { App, AppVersion } from '@/types';
 
@@ -12,6 +14,8 @@ export default function AppConfig() {
   const navigate = useNavigate();
   const { currentUser, isAuthenticated, checkAuth } = useAuthStore();
   const { getVersions, createVersion, updateVersion, removeVersion } = useAppStore();
+  const { lang } = useLangStore();
+  const i18n = t(lang);
   const [app, setApp] = useState<App | null>(null);
   const [versions, setVersions] = useState<AppVersion[]>([]);
 
@@ -52,7 +56,7 @@ export default function AppConfig() {
   };
 
   const handleDeleteVersion = (versionId: string) => {
-    if (confirm('确定要删除这个版本吗？')) {
+    if (confirm(i18n.appConfig.deleteVersionConfirm)) {
       removeVersion(versionId);
       if (id) {
         setVersions(getVersions(id));
@@ -72,14 +76,13 @@ export default function AppConfig() {
         <div className="mb-8">
           <button
             onClick={() => navigate('/dashboard')}
-            className="text-sm text-gray-600 hover:text-black mb-4 flex items-center gap-1"
+            className="text-sm text-gray-600 hover:text-black mb-4"
           >
-            <i className="iconfont icon-back"></i>
-            返回应用列表
+            {i18n.appConfig.back}
           </button>
 
           <h1 className="text-3xl font-bold">{app.name}</h1>
-          <p className="text-gray-500 mt-1">{app.description || '暂无描述'}</p>
+          <p className="text-gray-500 mt-1">{app.description || i18n.appConfig.noDesc}</p>
 
           <div className="mt-4 text-xs font-mono bg-gray-50 px-4 py-3 rounded-xl inline-block">
             UID: {app.id}

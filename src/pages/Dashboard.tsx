@@ -6,6 +6,8 @@ import CreateAppModal from '@/components/CreateAppModal';
 import GlassCard from '@/components/GlassCard';
 import { useAuthStore } from '@/stores/authStore';
 import { useAppStore } from '@/stores/appStore';
+import { useLangStore } from '@/stores/langStore';
+import { t } from '@/i18n/translations';
 import { generateUID } from '@/utils/uidGenerator';
 import { App } from '@/types';
 
@@ -13,6 +15,8 @@ export default function Dashboard() {
   const navigate = useNavigate();
   const { currentUser, isAuthenticated, checkAuth } = useAuthStore();
   const { apps, loadApps, createApp, updateApp, removeApp } = useAppStore();
+  const { lang } = useLangStore();
+  const i18n = t(lang);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
 
@@ -48,14 +52,14 @@ export default function Dashboard() {
   };
 
   const handleEditApp = (app: App) => {
-    const newName = prompt('输入新的应用名称:', app.name);
+    const newName = prompt(i18n.dashboard.editName, app.name);
     if (newName && newName.trim()) {
       updateApp({ ...app, name: newName.trim() });
     }
   };
 
   const handleDeleteApp = (id: string) => {
-    if (confirm('确定要删除这个应用吗？所有版本配置将被清除。')) {
+    if (confirm(i18n.dashboard.deleteConfirm)) {
       removeApp(id);
     }
   };
@@ -71,11 +75,11 @@ export default function Dashboard() {
       <div className="pt-28 px-4 max-w-7xl mx-auto">
         <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-8">
           <div>
-            <h1 className="text-3xl font-bold">我的应用</h1>
-            <p className="text-gray-500 mt-1">管理你的应用热更新配置</p>
+            <h1 className="text-3xl font-bold">{i18n.dashboard.title}</h1>
+            <p className="text-gray-500 mt-1">{i18n.dashboard.subtitle}</p>
           </div>
           <button onClick={() => setIsModalOpen(true)} className="btn-primary">
-            创建应用
+            {i18n.dashboard.create}
           </button>
         </div>
 
@@ -86,7 +90,7 @@ export default function Dashboard() {
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
               className="input-glass max-w-md"
-              placeholder="搜索应用..."
+              placeholder={i18n.dashboard.search}
             />
           </div>
         )}
@@ -104,13 +108,12 @@ export default function Dashboard() {
           </div>
         ) : (
           <GlassCard hover={false} className="text-center py-16">
-            <i className="iconfont icon-empty text-6xl text-gray-300 mb-4"></i>
             <p className="text-gray-500 mb-6">
-              {searchTerm ? '没有找到匹配的应用' : '还没有创建应用'}
+              {searchTerm ? i18n.dashboard.noMatch : i18n.dashboard.noApps}
             </p>
             {!searchTerm && (
               <button onClick={() => setIsModalOpen(true)} className="btn-primary">
-                创建第一个应用
+                {i18n.dashboard.createFirst}
               </button>
             )}
           </GlassCard>

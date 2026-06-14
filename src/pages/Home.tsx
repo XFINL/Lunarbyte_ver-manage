@@ -1,85 +1,97 @@
 import { Link } from 'react-router-dom';
 import Navbar from '@/components/Navbar';
-import GlassCard from '@/components/GlassCard';
+import { useLangStore } from '@/stores/langStore';
+import { t } from '@/i18n/translations';
 
 export default function Home() {
+  const { lang } = useLangStore();
+  const i18n = t(lang);
+
   return (
-    <div className="min-h-screen">
+    <div className="min-h-screen bg-black text-white">
       <Navbar />
 
-      {/* Hero Section */}
-      <section className="pt-32 pb-20 px-4">
-        <div className="max-w-6xl mx-auto text-center">
-          <h1 className="text-5xl md:text-6xl font-bold mb-6 leading-tight">
-            热更新 API
-            <br />
-            快速平台
-          </h1>
-          <p className="text-lg md:text-xl text-gray-600 mb-10 max-w-2xl mx-auto">
-            为 App 开发者提供统一的热更新配置管理平台，简化版本发布流程
-          </p>
-          <div className="flex gap-4 justify-center">
-            <Link to="/login" className="btn-primary text-base px-8 py-4">
-              立即开始
-            </Link>
-            <a href="#features" className="btn-secondary text-base px-8 py-4">
-              了解更多
-            </a>
+      {/* Hero Section - Swiss Modernist */}
+      <section className="pt-40 pb-32 px-6">
+        <div className="max-w-6xl mx-auto">
+          <div className="grid grid-cols-12 gap-8 items-end">
+            <div className="col-span-12 md:col-span-8">
+              <h1 className="text-6xl md:text-8xl lg:text-9xl font-light leading-none tracking-tight">
+                {i18n.home.heroTitle}
+              </h1>
+              <h2 className="text-4xl md:text-6xl lg:text-7xl font-extralight mt-4 tracking-tight text-gray-400">
+                {i18n.home.heroSubtitle}
+              </h2>
+            </div>
+          </div>
+
+          <div className="grid grid-cols-12 gap-8 mt-16">
+            <div className="col-span-12 md:col-span-5 md:col-start-1">
+              <p className="text-lg md:text-xl font-light leading-relaxed text-gray-300">
+                {i18n.home.heroDesc}
+              </p>
+            </div>
+            <div className="col-span-12 md:col-span-4 md:col-start-8 flex md:justify-end items-start">
+              <Link
+                to="/login"
+                className="inline-block px-10 py-4 bg-white text-black text-sm font-medium tracking-wide hover:bg-gray-200 transition-colors"
+              >
+                {i18n.home.cta}
+              </Link>
+            </div>
           </div>
         </div>
       </section>
 
-      {/* Features Section */}
-      <section id="features" className="py-20 px-4">
+      {/* Features Section - Swiss Grid */}
+      <section className="py-32 px-6 border-t border-gray-800">
         <div className="max-w-6xl mx-auto">
-          <h2 className="text-3xl md:text-4xl font-bold text-center mb-16">
-            核心功能
-          </h2>
+          <div className="mb-20">
+            <span className="text-xs font-medium tracking-widest text-gray-500 uppercase">
+              {i18n.home.features}
+            </span>
+          </div>
 
-          <div className="grid md:grid-cols-3 gap-6">
-            <GlassCard>
-              <div className="flex flex-col gap-4">
-                <div className="w-12 h-12 bg-black rounded-xl flex items-center justify-center">
-                  <i className="iconfont icon-api text-white text-2xl"></i>
-                </div>
-                <h3 className="text-xl font-semibold">热更新 API</h3>
-                <p className="text-gray-600">
-                  标准化的 API 接口，快速集成热更新功能，支持多平台应用
-                </p>
-              </div>
-            </GlassCard>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-16 md:gap-8">
+            <div className="border-t border-white pt-8">
+              <span className="text-xs font-mono text-gray-500">01</span>
+              <h3 className="text-2xl md:text-3xl font-light mt-4 mb-6 tracking-tight">
+                {i18n.home.feature1Title}
+              </h3>
+              <p className="text-sm font-light leading-relaxed text-gray-400">
+                {i18n.home.feature1Desc}
+              </p>
+            </div>
 
-            <GlassCard>
-              <div className="flex flex-col gap-4">
-                <div className="w-12 h-12 bg-black rounded-xl flex items-center justify-center">
-                  <i className="iconfont icon-version text-white text-2xl"></i>
-                </div>
-                <h3 className="text-xl font-semibold">版本管理</h3>
-                <p className="text-gray-600">
-                  灵活的版本配置，支持版本号、下载地址、更新日志管理
-                </p>
-              </div>
-            </GlassCard>
+            <div className="border-t border-white pt-8">
+              <span className="text-xs font-mono text-gray-500">02</span>
+              <h3 className="text-2xl md:text-3xl font-light mt-4 mb-6 tracking-tight">
+                {i18n.home.feature2Title}
+              </h3>
+              <p className="text-sm font-light leading-relaxed text-gray-400">
+                {i18n.home.feature2Desc}
+              </p>
+            </div>
 
-            <GlassCard>
-              <div className="flex flex-col gap-4">
-                <div className="w-12 h-12 bg-black rounded-xl flex items-center justify-center">
-                  <i className="iconfont icon-multi-app text-white text-2xl"></i>
-                </div>
-                <h3 className="text-xl font-semibold">多应用支持</h3>
-                <p className="text-gray-600">
-                  一个账号管理多个应用，独立配置，互不干扰
-                </p>
-              </div>
-            </GlassCard>
+            <div className="border-t border-white pt-8">
+              <span className="text-xs font-mono text-gray-500">03</span>
+              <h3 className="text-2xl md:text-3xl font-light mt-4 mb-6 tracking-tight">
+                {i18n.home.feature3Title}
+              </h3>
+              <p className="text-sm font-light leading-relaxed text-gray-400">
+                {i18n.home.feature3Desc}
+              </p>
+            </div>
           </div>
         </div>
       </section>
 
       {/* Footer */}
-      <footer className="py-8 px-4 border-t border-gray-100">
-        <div className="max-w-6xl mx-auto text-center text-sm text-gray-500">
-          <p>HotUpdate API Platform - 热更新快速平台</p>
+      <footer className="py-12 px-6 border-t border-gray-800">
+        <div className="max-w-6xl mx-auto">
+          <p className="text-xs font-light tracking-widest text-gray-500">
+            {i18n.home.footer}
+          </p>
         </div>
       </footer>
     </div>

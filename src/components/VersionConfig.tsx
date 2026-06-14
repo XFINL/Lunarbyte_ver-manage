@@ -1,6 +1,8 @@
 import { useState, useEffect } from 'react';
 import { AppVersion } from '@/types';
 import GlassCard from './GlassCard';
+import { useLangStore } from '@/stores/langStore';
+import { t } from '@/i18n/translations';
 
 interface VersionConfigProps {
   appId: string;
@@ -11,6 +13,8 @@ interface VersionConfigProps {
 }
 
 export default function VersionConfig({ appId, versions, onSave, onUpdate, onDelete }: VersionConfigProps) {
+  const { lang } = useLangStore();
+  const i18n = t(lang);
   const [version, setVersion] = useState('');
   const [downloadUrl, setDownloadUrl] = useState('');
   const [changelog, setChangelog] = useState('');
@@ -77,51 +81,51 @@ export default function VersionConfig({ appId, versions, onSave, onUpdate, onDel
       <GlassCard hover={false}>
         <form onSubmit={handleSubmit} className="flex flex-col gap-4">
           <h3 className="font-semibold text-lg">
-            {editingId ? '编辑版本' : '添加新版本'}
+            {editingId ? i18n.appConfig.editVersion : i18n.appConfig.addVersion}
           </h3>
 
           <div className="flex flex-col gap-2">
-            <label className="text-sm font-medium">版本号</label>
+            <label className="text-sm font-medium">{i18n.appConfig.version}</label>
             <input
               type="text"
               value={version}
               onChange={(e) => setVersion(e.target.value)}
               className="input-glass"
-              placeholder="例如: 1.0.0"
+              placeholder={i18n.appConfig.versionPlaceholder}
               required
             />
           </div>
 
           <div className="flex flex-col gap-2">
-            <label className="text-sm font-medium">下载地址 (URL)</label>
+            <label className="text-sm font-medium">{i18n.appConfig.downloadUrl}</label>
             <input
               type="url"
               value={downloadUrl}
               onChange={(e) => setDownloadUrl(e.target.value)}
               className="input-glass"
-              placeholder="https://example.com/app.apk"
+              placeholder={i18n.appConfig.urlPlaceholder}
               required
             />
           </div>
 
           <div className="flex flex-col gap-2">
-            <label className="text-sm font-medium">更新日志</label>
+            <label className="text-sm font-medium">{i18n.appConfig.changelog}</label>
             <textarea
               value={changelog}
               onChange={(e) => setChangelog(e.target.value)}
               className="input-glass min-h-[120px] resize-none"
-              placeholder="输入更新日志..."
+              placeholder={i18n.appConfig.changelogPlaceholder}
             />
           </div>
 
           <div className="flex gap-3">
             {editingId && (
               <button type="button" onClick={handleCancel} className="btn-secondary flex-1">
-                取消
+                {i18n.appConfig.cancel}
               </button>
             )}
             <button type="submit" className="btn-primary flex-1">
-              {editingId ? '保存' : '添加'}
+              {editingId ? i18n.appConfig.save : i18n.appConfig.add}
             </button>
           </div>
         </form>
@@ -129,7 +133,7 @@ export default function VersionConfig({ appId, versions, onSave, onUpdate, onDel
 
       {versions.length > 0 && (
         <div className="flex flex-col gap-3">
-          <h3 className="font-semibold text-lg">版本历史</h3>
+          <h3 className="font-semibold text-lg">{i18n.appConfig.versionHistory}</h3>
           {versions.map((v) => (
             <GlassCard key={v.id}>
               <div className="flex flex-col gap-2">
@@ -137,10 +141,10 @@ export default function VersionConfig({ appId, versions, onSave, onUpdate, onDel
                   <span className="font-semibold">v{v.version}</span>
                   <div className="flex gap-2">
                     <button onClick={() => handleEdit(v)} className="text-sm text-gray-600 hover:text-black">
-                      编辑
+                      {i18n.dashboard.edit}
                     </button>
                     <button onClick={() => onDelete(v.id)} className="text-sm text-red-600 hover:text-red-800">
-                      删除
+                      {i18n.dashboard.delete}
                     </button>
                   </div>
                 </div>
@@ -153,7 +157,7 @@ export default function VersionConfig({ appId, versions, onSave, onUpdate, onDel
                   </div>
                 )}
                 <div className="text-xs text-gray-400">
-                  {new Date(v.createdAt).toLocaleString('zh-CN')}
+                  {new Date(v.createdAt).toLocaleString(lang === 'en' ? 'en-US' : 'zh-TW')}
                 </div>
               </div>
             </GlassCard>

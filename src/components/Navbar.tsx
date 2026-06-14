@@ -1,69 +1,82 @@
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useAuthStore } from '@/stores/authStore';
+import { useLangStore } from '@/stores/langStore';
 import { useIsMobile } from '@/hooks/useIsMobile';
+import { t, Lang } from '@/i18n/translations';
 
 export default function Navbar() {
   const { currentUser, isAuthenticated, logout } = useAuthStore();
+  const { lang, setLang } = useLangStore();
   const location = useLocation();
   const navigate = useNavigate();
   const isMobile = useIsMobile();
+  const i18n = t(lang);
 
   const handleLogout = () => {
     logout();
     navigate('/');
   };
 
+  const handleLangToggle = () => {
+    const newLang: Lang = lang === 'en' ? 'zh-TW' : 'en';
+    setLang(newLang);
+  };
+
   const isActive = (path: string) => location.pathname === path;
 
-  const navLinks = isAuthenticated ? (
-    currentUser?.role === 'admin' ? (
-      <>
-        <Link to="/admin" className={`nav-link ${isActive('/admin') ? 'active' : ''}`}>
-          <i className="iconfont icon-dashboard"></i>
-          <span>控制台</span>
-        </Link>
-      </>
-    ) : (
-      <>
-        <Link to="/dashboard" className={`nav-link ${isActive('/dashboard') ? 'active' : ''}`}>
-          <i className="iconfont icon-apps"></i>
-          <span>我的应用</span>
-        </Link>
-      </>
-    )
-  ) : (
-    <>
-      <Link to="/" className={`nav-link ${isActive('/') ? 'active' : ''}`}>
-        <i className="iconfont icon-home"></i>
-        <span>首页</span>
-      </Link>
-    </>
-  );
+  // Determine where "Me" links to
+  const meLink = isAuthenticated
+    ? currentUser?.role === 'admin'
+      ? '/admin'
+      : '/dashboard'
+    : '/login';
 
   const navContent = (
     <>
-      <Link to="/" className="flex items-center gap-2 font-bold text-lg">
-        <i className="iconfont icon-hotupdate text-2xl"></i>
-        <span>HotUpdate</span>
+      <Link to="/" className="text-sm font-medium tracking-wide">
+        HotUpdate
       </Link>
 
-      <nav className="flex items-center gap-2">
-        {navLinks}
+      <nav className="flex items-center gap-6">
+        <Link
+          to="/"
+          className={`text-sm transition-opacity ${
+            isActive('/') ? 'opacity-100' : 'opacity-60 hover:opacity-100'
+          }`}
+        >
+          {i18n.nav.home}
+        </Link>
+        <Link
+          to={meLink}
+          className={`text-sm transition-opacity ${
+            isActive(meLink) ? 'opacity-100' : 'opacity-60 hover:opacity-100'
+          }`}
+        >
+          {i18n.nav.me}
+        </Link>
       </nav>
 
-      <div className="flex items-center gap-3">
+      <div className="flex items-center gap-4">
+        <button
+          onClick={handleLangToggle}
+          className="text-xs font-mono opacity-60 hover:opacity-100 transition-opacity"
+        >
+          {lang === 'en' ? '繁中' : 'EN'}
+        </button>
+
         {isAuthenticated ? (
-          <>
-            <span className="text-sm text-gray-600 hidden md:inline">
-              {currentUser?.username}
-            </span>
-            <button onClick={handleLogout} className="btn-secondary text-sm px-4 py-2">
-              退出
-            </button>
-          </>
+          <button
+            onClick={handleLogout}
+            className="text-sm opacity-60 hover:opacity-100 transition-opacity"
+          >
+            {i18n.nav.logout}
+          </button>
         ) : (
-          <Link to="/login" className="btn-primary text-sm px-4 py-2">
-            登录
+          <Link
+            to="/login"
+            className="text-sm opacity-60 hover:opacity-100 transition-opacity"
+          >
+            {i18n.nav.login}
           </Link>
         )}
       </div>
@@ -72,7 +85,7 @@ export default function Navbar() {
 
   if (isMobile) {
     return (
-      <div className="fixed bottom-0 left-0 right-0 z-50 glass-nav safe-area-bottom">
+      <div className="fixed bottom-4 left-4 right-4 z-50 glass-nav rounded-2xl shadow-lg">
         <div className="flex items-center justify-around py-3 px-4">
           {navContent}
         </div>
@@ -81,8 +94,8 @@ export default function Navbar() {
   }
 
   return (
-    <div className="fixed top-4 left-4 right-4 z-50 glass-nav rounded-2xl">
-      <div className="flex items-center justify-between py-4 px-6">
+    <div className="fixed top-6 left-6 right-6 z-50 glass-nav rounded-2xl shadow-lg">
+      <div className="flex items-center justify-between py-4 px-8">
         {navContent}
       </div>
     </div>

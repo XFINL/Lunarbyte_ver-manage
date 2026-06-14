@@ -1,6 +1,8 @@
 import { App } from '@/types';
 import GlassCard from './GlassCard';
 import { useNavigate } from 'react-router-dom';
+import { useLangStore } from '@/stores/langStore';
+import { t } from '@/i18n/translations';
 
 interface AppCardProps {
   app: App;
@@ -10,6 +12,8 @@ interface AppCardProps {
 
 export default function AppCard({ app, onEdit, onDelete }: AppCardProps) {
   const navigate = useNavigate();
+  const { lang } = useLangStore();
+  const i18n = t(lang);
 
   return (
     <GlassCard className="cursor-pointer">
@@ -17,7 +21,7 @@ export default function AppCard({ app, onEdit, onDelete }: AppCardProps) {
         <div className="flex items-start justify-between">
           <div className="flex-1">
             <h3 className="font-semibold text-lg">{app.name}</h3>
-            <p className="text-sm text-gray-500 mt-1">{app.description || '暂无描述'}</p>
+            <p className="text-sm text-gray-500 mt-1">{app.description || i18n.appConfig.noDesc}</p>
           </div>
         </div>
 
@@ -26,7 +30,7 @@ export default function AppCard({ app, onEdit, onDelete }: AppCardProps) {
         </div>
 
         <div className="text-xs text-gray-400">
-          创建于 {new Date(app.createdAt).toLocaleDateString('zh-CN')}
+          {new Date(app.createdAt).toLocaleDateString(lang === 'en' ? 'en-US' : 'zh-TW')}
         </div>
 
         <div className="flex gap-2 mt-2">
@@ -34,14 +38,14 @@ export default function AppCard({ app, onEdit, onDelete }: AppCardProps) {
             onClick={() => navigate(`/dashboard/app/${app.id}`)}
             className="btn-primary text-xs px-4 py-2 flex-1"
           >
-            配置版本
+            {i18n.dashboard.configVersion}
           </button>
           {onEdit && (
             <button
               onClick={() => onEdit(app)}
               className="btn-secondary text-xs px-4 py-2"
             >
-              编辑
+              {i18n.dashboard.edit}
             </button>
           )}
           {onDelete && (
@@ -49,7 +53,7 @@ export default function AppCard({ app, onEdit, onDelete }: AppCardProps) {
               onClick={() => onDelete(app.id)}
               className="btn-secondary text-xs px-4 py-2 text-red-600 border-red-200 hover:bg-red-50"
             >
-              删除
+              {i18n.dashboard.delete}
             </button>
           )}
         </div>
