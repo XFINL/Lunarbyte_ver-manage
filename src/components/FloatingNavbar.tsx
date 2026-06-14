@@ -22,8 +22,8 @@ export default function FloatingNavbar() {
     <nav
       className={cn(
         'fixed z-50 flex items-center justify-between px-6 py-3',
-        'rounded-2xl shadow-lg shadow-black/10',
-        'bg-white/70 backdrop-blur-xl border border-white/50',
+        'rounded-[200px] shadow-lg shadow-black/10',
+        'bg-white/89 backdrop-blur-xl border border-white/50',
         'transition-all duration-300',
         'top-3 left-1/2 -translate-x-1/2 w-[calc(100%-1.5rem)] max-w-lg',
         'max-md:top-auto max-md:bottom-3 max-md:w-[calc(100%-1.5rem)]'
@@ -81,7 +81,7 @@ export default function FloatingNavbar() {
                   onClick={() => changeLanguage('zh-TW')}
                   className="w-full text-left px-4 py-2 text-sm hover:bg-gray-100 transition-colors"
                 >
-                  繁體中文
+                  zh
                 </button>
               )}
             </div>
