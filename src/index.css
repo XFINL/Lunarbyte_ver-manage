@@ -1,0 +1,94 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Source Han Sans', 'PingFang SC', system-ui, -apple-system, sans-serif;
+  background: #ffffff;
+  color: #1a1a1a;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* 玻璃液态效果基础类 */
+.glass {
+  background: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  border-radius: 20px;
+}
+
+.glass-card {
+  background: rgba(255, 255, 255, 0.6);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(0, 0, 0, 0.06);
+  border-radius: 16px;
+  transition: all 0.3s ease;
+}
+
+.glass-card:hover {
+  background: rgba(255, 255, 255, 0.8);
+  border-color: rgba(0, 0, 0, 0.12);
+  transform: translateY(-2px);
+}
+
+.glass-nav {
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border: 1px solid rgba(0, 0, 0, 0.08);
+}
+
+/* 按钮样式 */
+.btn-primary {
+  @apply bg-black text-white px-6 py-3 rounded-xl font-medium transition-all duration-300;
+}
+
+.btn-primary:hover {
+  @apply bg-gray-800 shadow-lg;
+  transform: translateY(-1px);
+}
+
+.btn-secondary {
+  @apply bg-white text-black px-6 py-3 rounded-xl font-medium border border-gray-200 transition-all duration-300;
+}
+
+.btn-secondary:hover {
+  @apply bg-gray-50 border-gray-300;
+}
+
+/* 输入框样式 */
+.input-glass {
+  @apply w-full px-4 py-3 bg-white/60 backdrop-blur-sm border border-gray-200 rounded-xl outline-none transition-all duration-300;
+}
+
+.input-glass:focus {
+  @apply bg-white/80 border-gray-400;
+}
+
+/* 滚动条样式 */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(0, 0, 0, 0.3);
+}
