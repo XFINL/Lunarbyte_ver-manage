@@ -7,10 +7,11 @@ import { useState } from 'react';
 export default function FloatingNavbar() {
   const { t, i18n } = useTranslation();
   const location = useLocation();
-  const { isLoggedIn, logout } = useAuthStore();
+  const { user, isLoggedIn, logout } = useAuthStore();
   const [showLangMenu, setShowLangMenu] = useState(false);
 
   const isHome = location.pathname === '/';
+  const isDashboard = location.pathname === '/dashboard' || location.pathname === '/admin';
 
   const changeLanguage = (lng: string) => {
     i18n.changeLanguage(lng);
@@ -28,6 +29,7 @@ export default function FloatingNavbar() {
         'max-md:top-auto max-md:bottom-3 max-md:w-[calc(100%-1.5rem)]'
       )}
     >
+      <div className="flex items-center gap-1">
       <Link
         to="/"
         className={cn(
@@ -39,6 +41,20 @@ export default function FloatingNavbar() {
       >
         Home
       </Link>
+      {isLoggedIn && (
+        <Link
+          to={user?.role === 'admin' ? '/admin' : '/dashboard'}
+          className={cn(
+            'px-4 py-2 rounded-xl text-sm font-medium transition-all duration-200',
+            isDashboard
+              ? 'bg-black text-white'
+              : 'text-gray-700 hover:bg-gray-100'
+          )}
+        >
+          Me
+        </Link>
+      )}
+      </div>
 
       <div className="flex items-center gap-2">
         <div className="relative">
