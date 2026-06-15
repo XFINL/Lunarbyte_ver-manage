@@ -6,6 +6,7 @@ import { useApiKeyStore } from '@/stores/apiKeyStore';
 import GlassCard from '@/components/GlassCard';
 import GlassModal from '@/components/GlassModal';
 import { Key, Copy, Trash2, Check } from 'lucide-react';
+import { getNameError, getNameMaxLength } from '@/lib/utils';
 
 export default function ApiPage() {
   const { t } = useTranslation();
@@ -15,6 +16,7 @@ export default function ApiPage() {
 
   const [showCreate, setShowCreate] = useState(false);
   const [keyName, setKeyName] = useState('');
+  const [keyNameError, setKeyNameError] = useState<string | null>(null);
   const [selectedAppId, setSelectedAppId] = useState('');
   const [generatedKey, setGeneratedKey] = useState<string | null>(null);
   const [copiedId, setCopiedId] = useState<string | null>(null);
@@ -32,7 +34,10 @@ export default function ApiPage() {
 
   const handleCreate = () => {
     setError('');
+    setKeyNameError(null);
     if (!keyName.trim() || !selectedAppId || !user) return;
+    const err = getNameError(keyName);
+    if (err) { setKeyNameError(err); return; }
     if (atLimit) {
       setError(t('key_limit'));
       return;
@@ -163,10 +168,18 @@ export default function ApiPage() {
               <input
                 type="text"
                 value={keyName}
-                onChange={(e) => setKeyName(e.target.value)}
+                onChange={(e) => {
+                  const v = e.target.value;
+                  const maxLen = getNameMaxLength(v);
+                  if (v.length <= maxLen) {
+                    setKeyName(v);
+                    setKeyNameError(null);
+                  }
+                }}
                 className="w-full px-4 py-2.5 rounded-xl border border-white/40 bg-white/50 backdrop-blur-sm text-sm text-gray-900 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-black/10 transition-all"
                 placeholder={t('key_name_placeholder')}
               />
+              {keyNameError && <p className="text-xs text-red-500">{keyNameError}</p>}
             </div>
             <div>
               <label className="block text-xs font-medium text-gray-600 mb-1.5">

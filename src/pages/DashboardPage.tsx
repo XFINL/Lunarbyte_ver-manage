@@ -5,6 +5,7 @@ import { useAppStore, type AppItem } from '@/stores/appStore';
 import GlassCard from '@/components/GlassCard';
 import GlassModal from '@/components/GlassModal';
 import { Plus, Trash2, ChevronRight, Package, Link, FileText } from 'lucide-react';
+import { getNameError, getNameMaxLength } from '@/lib/utils';
 
 export default function DashboardPage() {
   const { t } = useTranslation();
@@ -13,6 +14,7 @@ export default function DashboardPage() {
 
   const [showCreate, setShowCreate] = useState(false);
   const [appName, setAppName] = useState('');
+  const [nameError, setNameError] = useState<string | null>(null);
   const [selectedApp, setSelectedApp] = useState<AppItem | null>(null);
   const [showVersion, setShowVersion] = useState(false);
   const [verNumber, setVerNumber] = useState('');
@@ -27,8 +29,11 @@ export default function DashboardPage() {
 
   const handleCreate = () => {
     if (!appName.trim() || !user) return;
+    const err = getNameError(appName);
+    if (err) { setNameError(err); return; }
     createApp(appName.trim(), user.id);
     setAppName('');
+    setNameError(null);
     setShowCreate(false);
   };
 
@@ -131,11 +136,19 @@ export default function DashboardPage() {
             <input
               type="text"
               value={appName}
-              onChange={(e) => setAppName(e.target.value)}
+              onChange={(e) => {
+                const v = e.target.value;
+                const maxLen = getNameMaxLength(v);
+                if (v.length <= maxLen) {
+                  setAppName(v);
+                  setNameError(null);
+                }
+              }}
               className="w-full px-4 py-2.5 rounded-xl border border-white/40 bg-white/50 backdrop-blur-sm text-sm text-gray-900 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-black/10 transition-all"
               placeholder={t('app_name_placeholder')}
               onKeyDown={(e) => e.key === 'Enter' && handleCreate()}
             />
+            {nameError && <p className="text-xs text-red-500">{nameError}</p>}
           </div>
           <div className="flex justify-end gap-2">
             <button
