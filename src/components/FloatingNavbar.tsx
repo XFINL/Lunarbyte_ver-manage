@@ -39,7 +39,7 @@ export default function FloatingNavbar() {
             : 'text-gray-700 hover:bg-gray-100'
         )}
       >
-        Home
+        {t('home')}
       </Link>
       {isLoggedIn && (
         <Link
@@ -51,7 +51,7 @@ export default function FloatingNavbar() {
               : 'text-gray-700 hover:bg-gray-100'
           )}
         >
-          Me
+          {t('me')}
         </Link>
       )}
       </div>
@@ -65,7 +65,7 @@ export default function FloatingNavbar() {
               'transition-all duration-200 text-gray-700 hover:bg-gray-100'
             )}
           >
-            Lang
+            {t('language')}
           </button>
           {showLangMenu && (
             <div className="absolute right-0 bottom-full mb-1 bg-white/90 backdrop-blur-xl rounded-xl border border-white/50 shadow-lg overflow-hidden">
