@@ -104,5 +104,10 @@
   "res_changelog": "更新日誌",
   "res_has_update": "是否有新版本可用",
   "example_request": "請求範例",
-  "example_response": "回應範例"
+  "example_response": "回應範例",
+  "contact_purchase": "如需購買，請聯繫",
+  "js_example": "JavaScript",
+  "curl_example": "cURL",
+  "php_example": "PHP",
+  "py_example": "Python"
 }

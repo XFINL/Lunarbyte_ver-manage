@@ -7,6 +7,7 @@ import { useState } from 'react';
 export default function DocsPage() {
   const { t } = useTranslation();
   const [copied, setCopied] = useState('');
+  const [activeTab, setActiveTab] = useState<'curl' | 'js' | 'php' | 'py'>('curl');
 
   const handleCopy = (text: string) => {
     navigator.clipboard.writeText(text);
@@ -14,15 +15,74 @@ export default function DocsPage() {
     setTimeout(() => setCopied(''), 2000);
   };
 
-  const baseUrl = 'https://api.hotupdate.example.com/v1';
+  const baseUrl = 'https://ver.lunarbyte.pw';
 
-  const curlExample = `curl -X GET "${baseUrl}/check-update" \\
+  const examples = {
+    curl: `curl -X GET "${baseUrl}/check-update" \\
   -H "Authorization: Bearer hk_YOUR_API_KEY" \\
   -H "Content-Type: application/json" \\
   -d '{
     "app_uid": "26AbCd06EfGh14IjKl09MnOp30QrSt",
     "version": "1.0.0"
-  }'`;
+  }'`,
+    js: `const response = await fetch('${baseUrl}/check-update', {
+  method: 'GET',
+  headers: {
+    'Authorization': 'Bearer hk_YOUR_API_KEY',
+    'Content-Type': 'application/json',
+  },
+  body: JSON.stringify({
+    app_uid: '26AbCd06EfGh14IjKl09MnOp30QrSt',
+    version: '1.0.0',
+  }),
+});
+
+const data = await response.json();
+if (data.data.has_update) {
+  console.log('New version:', data.data.latest_version);
+  console.log('Download:', data.data.download_url);
+}`,
+    php: `$ch = curl_init();
+
+curl_setopt($ch, CURLOPT_URL, '${baseUrl}/check-update');
+curl_setopt($ch, CURLOPT_HTTPHEADER, [
+  'Authorization: Bearer hk_YOUR_API_KEY',
+  'Content-Type: application/json',
+]);
+curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode([
+  'app_uid' => '26AbCd06EfGh14IjKl09MnOp30QrSt',
+  'version' => '1.0.0',
+]));
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+
+$response = curl_exec($ch);
+$data = json_decode($response, true);
+
+if ($data['data']['has_update']) {
+  echo 'New version: ' . $data['data']['latest_version'];
+  echo 'Download: ' . $data['data']['download_url'];
+}
+
+curl_close($ch);`,
+    py: `import requests
+
+response = requests.get(
+    '${baseUrl}/check-update',
+    headers={
+        'Authorization': 'Bearer hk_YOUR_API_KEY',
+        'Content-Type': 'application/json',
+    },
+    json={
+        'app_uid': '26AbCd06EfGh14IjKl09MnOp30QrSt',
+        'version': '1.0.0',
+    },
+)
+
+data = response.json()
+if data['data']['has_update']:
+    print('New version:', data['data']['latest_version'])
+    print('Download:', data['data']['download_url'])`,
+  };
 
   const responseExample = `{
   "code": 0,
@@ -208,15 +268,31 @@ export default function DocsPage() {
               <Code size={16} />
               {t('example_request')}
             </h3>
+            {/* Language Tabs */}
+            <div className="flex gap-1 mb-3">
+              {(['curl', 'js', 'php', 'py'] as const).map((tab) => (
+                <button
+                  key={tab}
+                  onClick={() => setActiveTab(tab)}
+                  className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-all ${
+                    activeTab === tab
+                      ? 'bg-black text-white'
+                      : 'text-gray-500 hover:bg-gray-100'
+                  }`}
+                >
+                  {tab === 'curl' ? t('curl_example') : tab === 'js' ? t('js_example') : tab === 'php' ? t('php_example') : t('py_example')}
+                </button>
+              ))}
+            </div>
             <div className="relative">
               <pre className="bg-gray-900 text-gray-100 text-xs p-5 rounded-2xl overflow-x-auto leading-relaxed">
-                {curlExample}
+                {examples[activeTab]}
               </pre>
               <button
-                onClick={() => handleCopy(curlExample)}
+                onClick={() => handleCopy(examples[activeTab])}
                 className="absolute top-3 right-3 p-1.5 rounded-lg bg-gray-700 hover:bg-gray-600 transition-colors text-gray-400 hover:text-white"
               >
-                {copied === curlExample ? <Check size={14} className="text-green-400" /> : <Copy size={14} />}
+                {copied === examples[activeTab] ? <Check size={14} className="text-green-400" /> : <Copy size={14} />}
               </button>
             </div>
           </div>

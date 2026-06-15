@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import GlassCard from '@/components/GlassCard';
 import GlassModal from '@/components/GlassModal';
-import { Zap } from 'lucide-react';
+import { Zap, Mail } from 'lucide-react';
 
 const TOTAL_CALLS = 10000;
 const USED_CALLS = 3250;
@@ -12,6 +12,7 @@ const PERCENT = Math.round((REMAINING / TOTAL_CALLS) * 100);
 export default function ResourcesPage() {
   const { t } = useTranslation();
   const [showPurchase, setShowPurchase] = useState(false);
+  const [selectedPlan, setSelectedPlan] = useState<string | null>(null);
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 via-blue-50/30 to-purple-50/30 pt-20 pb-24 px-4 md:px-8">
@@ -73,38 +74,61 @@ export default function ResourcesPage() {
       </div>
 
       {/* Purchase Modal */}
-      <GlassModal open={showPurchase} onClose={() => setShowPurchase(false)} title={t('purchase_calls')}>
-        <div className="space-y-4">
-          <p className="text-sm text-gray-500">
-            {t('remaining_calls')}: {REMAINING.toLocaleString()} / {TOTAL_CALLS.toLocaleString()}
-          </p>
-          <div className="grid grid-cols-1 gap-3">
-            {[
-              { calls: 1000, price: '$9.99' },
-              { calls: 5000, price: '$39.99' },
-              { calls: 10000, price: '$69.99' },
-              { calls: 50000, price: '$299.99' },
-            ].map((plan) => (
-              <button
-                key={plan.calls}
-                className="flex items-center justify-between p-4 rounded-xl border border-white/40 bg-white/50 hover:bg-white/70 transition-all"
+      <GlassModal open={showPurchase} onClose={() => { setShowPurchase(false); setSelectedPlan(null); }} title={t('purchase_calls')}>
+        {selectedPlan ? (
+          <div className="space-y-4 text-center">
+            <Mail size={40} className="mx-auto text-gray-400" />
+            <div>
+              <p className="text-sm font-medium text-gray-900 mb-1">{selectedPlan}</p>
+              <p className="text-xs text-gray-500 mb-4">{t('contact_purchase')}</p>
+              <a
+                href="mailto:buy@lunarbyte.pw"
+                className="inline-block px-6 py-2.5 rounded-xl bg-black text-white text-sm font-medium hover:bg-gray-800 transition-all"
               >
-                <span className="text-sm font-medium text-gray-900">
-                  {plan.calls.toLocaleString()} Calls
-                </span>
-                <span className="text-sm font-semibold text-gray-900">{plan.price}</span>
-              </button>
-            ))}
-          </div>
-          <div className="flex justify-end pt-2">
+                buy@lunarbyte.pw
+              </a>
+            </div>
             <button
-              onClick={() => setShowPurchase(false)}
-              className="px-4 py-2 rounded-xl text-sm text-gray-600 hover:bg-gray-100 transition-colors"
+              onClick={() => setSelectedPlan(null)}
+              className="text-xs text-gray-400 hover:text-gray-600 transition-colors"
             >
-              {t('cancel')}
+              {t('back')}
             </button>
           </div>
-        </div>
+        ) : (
+          <div className="space-y-4">
+            <p className="text-sm text-gray-500">
+              {t('remaining_calls')}: {REMAINING.toLocaleString()} / {TOTAL_CALLS.toLocaleString()}
+            </p>
+            <div className="grid grid-cols-1 gap-3">
+              {[
+                { calls: 1000, price: '$9.99' },
+                { calls: 5000, price: '$39.99' },
+                { calls: 10000, price: '$69.99' },
+                { calls: 50000, price: '$299.99' },
+              ].map((plan) => (
+                <button
+                  key={plan.calls}
+                  onClick={() => setSelectedPlan(`${plan.calls.toLocaleString()} Calls - ${plan.price}`)}
+                  className="flex items-center justify-between p-4 rounded-xl border border-white/40 bg-white/50 hover:bg-white/70 transition-all"
+                >
+                  <span className="text-sm font-medium text-gray-900">
+                    {plan.calls.toLocaleString()} Calls
+                  </span>
+                  <span className="text-sm font-semibold text-gray-900">{plan.price}</span>
+                </button>
+              ))}
+            </div>
+            <div className="flex justify-end pt-2">
+              <button
+                onClick={() => setShowPurchase(false)}
+                className="px-4 py-2 rounded-xl text-sm text-gray-600 hover:bg-gray-100 transition-colors"
+              >
+                {t('cancel')}
+              </button>
+            </div>
+          </div>
+        )}
       </GlassModal>
     </div>
   );

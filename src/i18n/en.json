@@ -104,5 +104,10 @@
   "res_changelog": "Update changelog",
   "res_has_update": "Whether a new version is available",
   "example_request": "Example Request",
-  "example_response": "Example Response"
+  "example_response": "Example Response",
+  "contact_purchase": "To purchase, please contact",
+  "js_example": "JavaScript",
+  "curl_example": "cURL",
+  "php_example": "PHP",
+  "py_example": "Python"
 }
