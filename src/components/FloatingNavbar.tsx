@@ -72,13 +72,21 @@ export default function FloatingNavbar() {
             <button
               onClick={handleMeClick}
               className={cn(
-                'px-4 py-2 rounded-xl text-sm font-medium transition-all duration-200',
+                'px-4 py-2 rounded-xl text-sm font-medium transition-all duration-200 flex items-center gap-1.5',
                 isAdminOrUserPage
                   ? 'bg-black text-white'
                   : 'text-gray-700 hover:bg-gray-100'
               )}
             >
               {t('me')}
+              <span
+                className={cn(
+                  'inline-block transition-transform duration-200',
+                  showMeMenu ? 'rotate-90' : ''
+                )}
+              >
+                &gt;
+              </span>
             </button>
             {showMeMenu && (
               <div className="absolute left-0 bottom-full mb-1 bg-white/90 backdrop-blur-xl rounded-xl border border-white/50 shadow-lg overflow-hidden min-w-[140px]">
