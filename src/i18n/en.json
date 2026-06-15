@@ -57,5 +57,22 @@
   "platform_name": "HotUpdate API",
   "platform_tagline": "Ship updates faster",
   "resources": "Resources",
-  "api": "API"
+  "api": "API",
+  "remaining_calls": "Remaining Calls",
+  "total_calls": "Total Calls",
+  "purchase_calls": "Purchase More Calls",
+  "used": "Used",
+  "create_api_key": "Create API Key",
+  "key_name": "Key Name",
+  "key_name_placeholder": "Enter key name",
+  "select_app": "Select App",
+  "generate_key": "Generate Key",
+  "your_keys": "Your API Keys",
+  "no_keys": "No API keys yet. Create one to get started.",
+  "key_limit": "Maximum 20 keys per account",
+  "copied": "Copied",
+  "copy": "Copy",
+  "key_value": "Key Value",
+  "key_generated": "Key generated successfully. Make sure to copy it now.",
+  "select_app_placeholder": "Choose an app"
 }

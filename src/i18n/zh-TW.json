@@ -57,5 +57,22 @@
   "platform_name": "HotUpdate API",
   "platform_tagline": "更快地分發更新",
   "resources": "資源包",
-  "api": "API"
+  "api": "API",
+  "remaining_calls": "剩餘呼叫次數",
+  "total_calls": "總呼叫次數",
+  "purchase_calls": "新購呼叫次數",
+  "used": "已使用",
+  "create_api_key": "建立 API Key",
+  "key_name": "Key 名稱",
+  "key_name_placeholder": "輸入 Key 名稱",
+  "select_app": "選擇應用",
+  "generate_key": "生成 Key",
+  "your_keys": "您的 API Keys",
+  "no_keys": "尚無 API Key，建立一個開始使用。",
+  "key_limit": "每個帳號最多 20 個 Key",
+  "copied": "已複製",
+  "copy": "複製",
+  "key_value": "Key 值",
+  "key_generated": "Key 已生成，請立即複製保存。",
+  "select_app_placeholder": "選擇一個應用"
 }
