@@ -108,14 +108,22 @@ export default function HomePage() {
             <p className="text-white/50 text-lg font-light mb-6">
               {t('cta_subtitle')}
             </p>
-            {!isLoggedIn && (
+            <div className="flex flex-col items-end gap-4">
+              {!isLoggedIn && (
+                <Link
+                  to="/login"
+                  className="inline-block px-8 py-3 border border-white/30 text-white text-sm font-medium tracking-widest uppercase hover:bg-white hover:text-black transition-all duration-300"
+                >
+                  {t('cta_button')}
+                </Link>
+              )}
               <Link
-                to="/login"
-                className="inline-block px-8 py-3 border border-white/30 text-white text-sm font-medium tracking-widest uppercase hover:bg-white hover:text-black transition-all duration-300"
+                to="/docs"
+                className="text-sm text-white/40 font-light tracking-wider uppercase hover:text-white/70 transition-colors"
               >
-                {t('cta_button')}
+                {t('view_docs')}
               </Link>
-            )}
+            </div>
           </div>
         </div>
       </section>

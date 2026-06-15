@@ -7,6 +7,7 @@ import DashboardPage from '@/pages/DashboardPage';
 import ResourcesPage from '@/pages/ResourcesPage';
 import ApiPage from '@/pages/ApiPage';
 import AdminPage from '@/pages/AdminPage';
+import DocsPage from '@/pages/DocsPage';
 import { useAuthStore } from '@/stores/authStore';
 
 function ProtectedRoute({ children, adminOnly = false }: { children: React.ReactNode; adminOnly?: boolean }) {
@@ -28,6 +29,7 @@ export default function App() {
       <FloatingNavbar />
       <Routes>
         <Route path="/" element={<HomePage />} />
+        <Route path="/docs" element={<DocsPage />} />
         <Route path="/login" element={<LoginPage />} />
         <Route
           path="/dashboard"
