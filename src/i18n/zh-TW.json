@@ -109,5 +109,13 @@
   "js_example": "JavaScript",
   "curl_example": "cURL",
   "php_example": "PHP",
-  "py_example": "Python"
+  "py_example": "Python",
+  "call_overview": "呼叫總攬",
+  "user_growth": "用戶增長",
+  "today_calls": "今日呼叫次數",
+  "yesterday": "昨日",
+  "today": "今日",
+  "call_type_distribution": "呼叫類型分佈",
+  "today_revenue": "今日收益",
+  "hour": "時"
 }

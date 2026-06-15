@@ -109,5 +109,13 @@
   "js_example": "JavaScript",
   "curl_example": "cURL",
   "php_example": "PHP",
-  "py_example": "Python"
+  "py_example": "Python",
+  "call_overview": "Call Overview",
+  "user_growth": "User Growth",
+  "today_calls": "Today's Calls",
+  "yesterday": "Yesterday",
+  "today": "Today",
+  "call_type_distribution": "Call Type Distribution",
+  "today_revenue": "Today's Revenue",
+  "hour": "Hour"
 }
