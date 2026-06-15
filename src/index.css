@@ -66,3 +66,23 @@ body {
 .animate-in {
   animation: fadeInUp 0.25s ease-out;
 }
+
+/* Remove yellow browser focus outline globally */
+*:focus,
+*:focus-visible,
+*:focus-within {
+  outline: none !important;
+  box-shadow: none !important;
+}
+
+/* Recharts SVG focus outline removal */
+.recharts-surface:focus,
+.recharts-surface:focus-visible,
+.recharts-layer:focus,
+.recharts-layer:focus-visible,
+.recharts-sector:focus,
+.recharts-sector:focus-visible,
+.recharts-bar-rectangle:focus,
+.recharts-bar-rectangle:focus-visible {
+  outline: none !important;
+}
