@@ -9,13 +9,23 @@ export default function FloatingNavbar() {
   const location = useLocation();
   const { user, isLoggedIn, logout } = useAuthStore();
   const [showLangMenu, setShowLangMenu] = useState(false);
+  const [showMeMenu, setShowMeMenu] = useState(false);
 
   const isHome = location.pathname === '/';
   const isDashboard = location.pathname === '/dashboard' || location.pathname === '/admin';
+  const isMePage = location.pathname.startsWith('/dashboard') || location.pathname === '/admin';
+  const isUser = user?.role === 'user';
 
   const changeLanguage = (lng: string) => {
     i18n.changeLanguage(lng);
     setShowLangMenu(false);
+  };
+
+  const handleMeClick = () => {
+    if (isUser && isMePage) {
+      setShowMeMenu(!showMeMenu);
+      setShowLangMenu(false);
+    }
   };
 
   return (
@@ -42,24 +52,77 @@ export default function FloatingNavbar() {
         {t('home')}
       </Link>
       {isLoggedIn && (
-        <Link
-          to={user?.role === 'admin' ? '/admin' : '/dashboard'}
-          className={cn(
-            'px-4 py-2 rounded-xl text-sm font-medium transition-all duration-200',
-            isDashboard
-              ? 'bg-black text-white'
-              : 'text-gray-700 hover:bg-gray-100'
+        <div className="relative">
+          {isUser && isMePage ? (
+            <button
+              onClick={handleMeClick}
+              className={cn(
+                'px-4 py-2 rounded-xl text-sm font-medium transition-all duration-200',
+                isDashboard
+                  ? 'bg-black text-white'
+                  : 'text-gray-700 hover:bg-gray-100'
+              )}
+            >
+              {t('me')}
+            </button>
+          ) : (
+            <Link
+              to={user?.role === 'admin' ? '/admin' : '/dashboard'}
+              className={cn(
+                'px-4 py-2 rounded-xl text-sm font-medium transition-all duration-200',
+                isDashboard
+                  ? 'bg-black text-white'
+                  : 'text-gray-700 hover:bg-gray-100'
+              )}
+            >
+              {t('me')}
+            </Link>
           )}
-        >
-          {t('me')}
-        </Link>
+          {showMeMenu && (
+            <div className="absolute left-0 bottom-full mb-1 bg-white/90 backdrop-blur-xl rounded-xl border border-white/50 shadow-lg overflow-hidden min-w-[120px]">
+              <Link
+                to="/dashboard"
+                onClick={() => setShowMeMenu(false)}
+                className={cn(
+                  'block w-full text-left px-4 py-2 text-sm hover:bg-gray-100 transition-colors',
+                  location.pathname === '/dashboard' && 'font-semibold bg-gray-50'
+                )}
+              >
+                {t('dashboard')}
+              </Link>
+              <Link
+                to="/dashboard/resources"
+                onClick={() => setShowMeMenu(false)}
+                className={cn(
+                  'block w-full text-left px-4 py-2 text-sm hover:bg-gray-100 transition-colors',
+                  location.pathname === '/dashboard/resources' && 'font-semibold bg-gray-50'
+                )}
+              >
+                {t('resources')}
+              </Link>
+              <Link
+                to="/dashboard/api"
+                onClick={() => setShowMeMenu(false)}
+                className={cn(
+                  'block w-full text-left px-4 py-2 text-sm hover:bg-gray-100 transition-colors',
+                  location.pathname === '/dashboard/api' && 'font-semibold bg-gray-50'
+                )}
+              >
+                {t('api')}
+              </Link>
+            </div>
+          )}
+        </div>
       )}
       </div>
 
       <div className="flex items-center gap-2">
         <div className="relative">
           <button
-            onClick={() => setShowLangMenu(!showLangMenu)}
+            onClick={() => {
+              setShowLangMenu(!showLangMenu);
+              setShowMeMenu(false);
+            }}
             className={cn(
               'px-3 py-2 rounded-xl text-sm font-medium',
               'transition-all duration-200 text-gray-700 hover:bg-gray-100'

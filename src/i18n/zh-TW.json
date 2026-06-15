@@ -55,5 +55,7 @@
   "back": "返回",
   "confirm_delete": "確定要刪除嗎？",
   "platform_name": "HotUpdate API",
-  "platform_tagline": "更快地分發更新"
+  "platform_tagline": "更快地分發更新",
+  "resources": "資源包",
+  "api": "API"
 }

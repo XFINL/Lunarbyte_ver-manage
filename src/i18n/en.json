@@ -55,5 +55,7 @@
   "back": "Back",
   "confirm_delete": "Are you sure you want to delete?",
   "platform_name": "HotUpdate API",
-  "platform_tagline": "Ship updates faster"
+  "platform_tagline": "Ship updates faster",
+  "resources": "Resources",
+  "api": "API"
 }

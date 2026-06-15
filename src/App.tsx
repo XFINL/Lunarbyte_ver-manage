@@ -4,6 +4,8 @@ import FloatingNavbar from '@/components/FloatingNavbar';
 import HomePage from '@/pages/HomePage';
 import LoginPage from '@/pages/LoginPage';
 import DashboardPage from '@/pages/DashboardPage';
+import ResourcesPage from '@/pages/ResourcesPage';
+import ApiPage from '@/pages/ApiPage';
 import AdminPage from '@/pages/AdminPage';
 import { useAuthStore } from '@/stores/authStore';
 
@@ -32,6 +34,22 @@ export default function App() {
           element={
             <ProtectedRoute>
               <DashboardPage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/dashboard/resources"
+          element={
+            <ProtectedRoute>
+              <ResourcesPage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/dashboard/api"
+          element={
+            <ProtectedRoute>
+              <ApiPage />
             </ProtectedRoute>
           }
         />
