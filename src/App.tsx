@@ -7,6 +7,10 @@ import DashboardPage from '@/pages/DashboardPage';
 import ResourcesPage from '@/pages/ResourcesPage';
 import ApiPage from '@/pages/ApiPage';
 import AdminPage from '@/pages/AdminPage';
+import AdminDashboardPage from '@/pages/AdminDashboardPage';
+import AdminCallOverviewPage from '@/pages/AdminCallOverviewPage';
+import AdminUsersPage from '@/pages/AdminUsersPage';
+import AdminDataPackagesPage from '@/pages/AdminDataPackagesPage';
 import DocsPage from '@/pages/DocsPage';
 import { useAuthStore } from '@/stores/authStore';
 
@@ -62,7 +66,12 @@ export default function App() {
               <AdminPage />
             </ProtectedRoute>
           }
-        />
+        >
+          <Route index element={<AdminDashboardPage />} />
+          <Route path="call-overview" element={<AdminCallOverviewPage />} />
+          <Route path="users" element={<AdminUsersPage />} />
+          <Route path="data-packages" element={<AdminDataPackagesPage />} />
+        </Route>
       </Routes>
     </Router>
   );

@@ -12,9 +12,10 @@ export default function FloatingNavbar() {
   const [showMeMenu, setShowMeMenu] = useState(false);
 
   const isHome = location.pathname === '/';
-  const isDashboard = location.pathname === '/dashboard' || location.pathname === '/admin';
-  const isMePage = location.pathname.startsWith('/dashboard') || location.pathname === '/admin';
-  const isUser = user?.role === 'user';
+  const isAdmin = user?.role === 'admin';
+  const isAdminPage = location.pathname.startsWith('/admin');
+  const isUserPage = location.pathname.startsWith('/dashboard');
+  const isAdminOrUserPage = isAdminPage || isUserPage;
 
   const changeLanguage = (lng: string) => {
     i18n.changeLanguage(lng);
@@ -22,11 +23,26 @@ export default function FloatingNavbar() {
   };
 
   const handleMeClick = () => {
-    if (isUser && isMePage) {
+    if (isLoggedIn && !isHome) {
       setShowMeMenu(!showMeMenu);
       setShowLangMenu(false);
     }
   };
+
+  const adminNavItems = [
+    { label: t('admin_dashboard'), path: '/admin' },
+    { label: t('admin_call_overview'), path: '/admin/call-overview' },
+    { label: t('admin_users'), path: '/admin/users' },
+    { label: t('admin_data_packages'), path: '/admin/data-packages' },
+  ];
+
+  const userNavItems = [
+    { label: t('dashboard'), path: '/dashboard' },
+    { label: t('resources'), path: '/dashboard/resources' },
+    { label: t('api'), path: '/dashboard/api' },
+  ];
+
+  const currentNavItems = isAdmin ? adminNavItems : userNavItems;
 
   return (
     <nav
@@ -40,80 +56,49 @@ export default function FloatingNavbar() {
       )}
     >
       <div className="flex items-center gap-1">
-      <Link
-        to="/"
-        className={cn(
-          'px-4 py-2 rounded-xl text-sm font-medium transition-all duration-200',
-          isHome
-            ? 'bg-black text-white'
-            : 'text-gray-700 hover:bg-gray-100'
-        )}
-      >
-        {t('home')}
-      </Link>
-      {isLoggedIn && (
-        <div className="relative">
-          {isUser && isMePage ? (
+        <Link
+          to="/"
+          className={cn(
+            'px-4 py-2 rounded-xl text-sm font-medium transition-all duration-200',
+            isHome
+              ? 'bg-black text-white'
+              : 'text-gray-700 hover:bg-gray-100'
+          )}
+        >
+          {t('home')}
+        </Link>
+        {isLoggedIn && (
+          <div className="relative">
             <button
               onClick={handleMeClick}
               className={cn(
                 'px-4 py-2 rounded-xl text-sm font-medium transition-all duration-200',
-                isDashboard
+                isAdminOrUserPage
                   ? 'bg-black text-white'
                   : 'text-gray-700 hover:bg-gray-100'
               )}
             >
               {t('me')}
             </button>
-          ) : (
-            <Link
-              to={user?.role === 'admin' ? '/admin' : '/dashboard'}
-              className={cn(
-                'px-4 py-2 rounded-xl text-sm font-medium transition-all duration-200',
-                isDashboard
-                  ? 'bg-black text-white'
-                  : 'text-gray-700 hover:bg-gray-100'
-              )}
-            >
-              {t('me')}
-            </Link>
-          )}
-          {showMeMenu && (
-            <div className="absolute left-0 bottom-full mb-1 bg-white/90 backdrop-blur-xl rounded-xl border border-white/50 shadow-lg overflow-hidden min-w-[120px]">
-              <Link
-                to="/dashboard"
-                onClick={() => setShowMeMenu(false)}
-                className={cn(
-                  'block w-full text-left px-4 py-2 text-sm hover:bg-gray-100 transition-colors',
-                  location.pathname === '/dashboard' && 'font-semibold bg-gray-50'
-                )}
-              >
-                {t('dashboard')}
-              </Link>
-              <Link
-                to="/dashboard/resources"
-                onClick={() => setShowMeMenu(false)}
-                className={cn(
-                  'block w-full text-left px-4 py-2 text-sm hover:bg-gray-100 transition-colors',
-                  location.pathname === '/dashboard/resources' && 'font-semibold bg-gray-50'
-                )}
-              >
-                {t('resources')}
-              </Link>
-              <Link
-                to="/dashboard/api"
-                onClick={() => setShowMeMenu(false)}
-                className={cn(
-                  'block w-full text-left px-4 py-2 text-sm hover:bg-gray-100 transition-colors',
-                  location.pathname === '/dashboard/api' && 'font-semibold bg-gray-50'
-                )}
-              >
-                {t('api')}
-              </Link>
-            </div>
-          )}
-        </div>
-      )}
+            {showMeMenu && (
+              <div className="absolute left-0 bottom-full mb-1 bg-white/90 backdrop-blur-xl rounded-xl border border-white/50 shadow-lg overflow-hidden min-w-[140px]">
+                {currentNavItems.map((item) => (
+                  <Link
+                    key={item.path}
+                    to={item.path}
+                    onClick={() => setShowMeMenu(false)}
+                    className={cn(
+                      'block w-full text-left px-4 py-2 text-sm hover:bg-gray-100 transition-colors',
+                      location.pathname === item.path && 'font-semibold bg-gray-50'
+                    )}
+                  >
+                    {item.label}
+                  </Link>
+                ))}
+              </div>
+            )}
+          </div>
+        )}
       </div>
 
       <div className="flex items-center gap-2">
